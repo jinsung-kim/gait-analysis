@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 # MongoDB connection
 # from pymongo import MongoClient
@@ -8,6 +9,7 @@ from flask import Flask, request, jsonify
 from flask_jwt_extended import create_access_token, JWTManager
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['JWT_SECRET_KEY'] = 'gaitanalysis'
 
