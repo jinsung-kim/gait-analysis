@@ -22,9 +22,15 @@ app.config['JWT_SECRET_KEY'] = 'gaitanalysis'
 
 jwt = JWTManager(app)
 
+# Testing if up
 @app.route('/', methods=['GET'])
 def homePage():
-    return "Hello, world" # Eventually put a home page here
+    return "Hello, world"
+
+
+@app.route('/getbox', methods=['GET'])
+def getBoxPlotData():
+    return {}
 
 
 if __name__ == '__main__':
