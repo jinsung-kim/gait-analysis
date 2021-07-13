@@ -2,23 +2,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
-// Gets the critical data points and returns them in an array to be used
-// as the component
-function getCritical(data, key) {
-    var q1 = d3.quantile(data, .25);
-    var median = d3.quantile(data, .5);
-    var q3 = d3.quantile(data, .75);
-    var interQuantileRange = q3 - q1;
-    var min = q1 - 1.5 * interQuantileRange;
-    var max = q1 + 1.5 * interQuantileRange;
-  
-    return ({
-            q1: q1, median: median, q3: q3, 
-            interQuantileRange: interQuantileRange, 
-            min: min, max: max, key: key
-            });
-}
-
 export default class BoxPlot extends Component {
 
     constructor(props) {
@@ -28,7 +11,7 @@ export default class BoxPlot extends Component {
         this.graphRef = React.createRef();
     }
 
-    async componentDidMount() {
+    componentDidUpdate() {
         var margin = {top: 10, right: 30, bottom: 30, left: 40},
             width = 460 - margin.left - margin.right,
             height = 600 - margin.top - margin.bottom;
@@ -43,8 +26,9 @@ export default class BoxPlot extends Component {
                   "translate(" + margin.left + "," + margin.top + ")");
         
         // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
-        const left = getCritical(this.props.left, "Left");
-        const right = getCritical(this.props.right, "Right");
+        const left = this.props.left;
+        const right = this.props.right;
+
         var sumstat = [left, right];
 
         // Gets the min and the max between the two graphs to get the range to use as the y axis
@@ -75,6 +59,8 @@ export default class BoxPlot extends Component {
         svg.append("g").call(d3.axisLeft(y))
 
         // Show the main vertical line (Min to Max range)
+        // Need to make sure that this is done first so that the box
+        // overlays on this line
         svg
             .selectAll("vertLines")
             .data(sumstat)

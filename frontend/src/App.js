@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+// import * as d3 from "d3";
 
 import './App.css';
 
@@ -31,12 +32,21 @@ class App extends Component {
       .then(res => {
         const data = res.data;
         this.setState({
+          // Gait Velocity values
           gaitVelocityLeft: data["left"]["gait_velocity"],
           gaitVelocityRight: data["right"]["gait_velocity"],
+          // gaitListLeft: data["left"]["gait_list"],
+          // gaitListRight: data["right"]["gait_list"],
+          // Stride length values
           strideLengthLeft: data["left"]["stride_length"],
           stridgeLengthRight: data["right"]["stride_length"],
+          // strideListLeft: data["left"]["stride_list"],
+          // strideListRight: data["right"]["stride_list"],
+          // Step rate values
           stepRateLeft: data["left"]["step_rate"],
           stepRateRight: data["right"]["step_rate"],
+          // stepListLeft: data["left"]["step_list"],
+          // stepListRight: data["right"]["step_list"],
         });
       })
       // If there are issues with CORS
@@ -48,15 +58,21 @@ class App extends Component {
       <div className="app">
         <BoxPlot  title="Gait Velocity" 
                   left={ this.state.gaitVelocityLeft }
+                  // lleft={ this.state.gaitListLeft }
                   right={ this.state.gaitVelocityRight }
+                  // lright={ this.state.gaitListRight }
         />
-        <BoxPlot  title="Stride Length" 
+        {/* <BoxPlot  title="Stride Length" 
                   left={ this.state.strideLengthLeft }
+                  lleft={ this.state.strideListLeft }
                   right={ this.state.strideLengthRight }
-        />
+                  lright={ this.state.strideListRight }
+        /> */}
         <BoxPlot  title="Step Rate" 
                   left={ this.state.stepRateLeft }
+                  // lleft={ this.state.stepListLeft }
                   right={ this.state.stepRateRight }
+                  // lright={ this.state.stepListRight }
         />
       </div>
     );
