@@ -38,9 +38,6 @@ def getBoxPlotData():
         "gait_velocity": gait_velocity_left,
         "stride_length": stride_length_left,
         "step_rate": step_rate_left,
-        # "gait_list": left_df.generate_list("stride_pace"),
-        # "stride_list": left_df.generate_list("stride_length"),
-        # "step_list": left_df.generate_list("step_rate")
     }
 
     # Get right foot side
@@ -52,9 +49,6 @@ def getBoxPlotData():
         "gait_velocity": gait_velocity_right,
         "stride_length": stride_length_right,
         "step_rate": step_rate_right,
-        # "gait_list": right_df.generate_list("stride_pace"),
-        # "stride_list": right_df.generate_list("stride_length"),
-        # "step_list": right_df.generate_list("step_rate")
     }
 
     return jsonify({ "left": left, "right": right })

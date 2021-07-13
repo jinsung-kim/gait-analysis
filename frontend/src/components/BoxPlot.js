@@ -31,6 +31,9 @@ export default class BoxPlot extends Component {
 
         var sumstat = [left, right];
 
+        console.log(left);
+        console.log(right);
+
         // Gets the min and the max between the two graphs to get the range to use as the y axis
         var localMin = Math.min(left.min, right.min);
         var localMax = Math.max(left.max, right.max);
