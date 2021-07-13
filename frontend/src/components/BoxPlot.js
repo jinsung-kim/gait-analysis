@@ -99,6 +99,30 @@ export default class BoxPlot extends Component {
             .attr("y2", function(d) { return(y(d.median)) })
             .attr("stroke", "black")
             .style("width", 80)
+
+        // Left min and max lines
+        svg
+            .selectAll("toto")
+            .data([left.min, left.max])
+            .enter()
+            .append("line")
+            .attr("x1", boxWidth / 2)
+            .attr("x2", boxWidth / 2 + 100)
+            .attr("y1", function(d) { return(y(d))} )
+            .attr("y2", function(d) { return(y(d))} )
+            .attr("stroke", "black")
+
+        // Right min and max lines
+        svg
+            .selectAll("toto")
+            .data([right.min, right.max])
+            .enter()
+            .append("line")
+            .attr("x1", width - 150)
+            .attr("x2", width - 40)
+            .attr("y1", function(d) { return(y(d))} )
+            .attr("y2", function(d) { return(y(d))} )
+            .attr("stroke", "black")
     }
 
     render() {
