@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
+import "../styles/BoxPlot.css";
+
 export default class BoxPlot extends Component {
 
     constructor(props) {
@@ -13,8 +15,8 @@ export default class BoxPlot extends Component {
 
     componentDidUpdate() {
         var margin = {top: 10, right: 30, bottom: 30, left: 40},
-            width = 460 - margin.left - margin.right,
-            height = 600 - margin.top - margin.bottom;
+            width = 350 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         var svg = d3.select(this.graphRef.current)
@@ -31,8 +33,8 @@ export default class BoxPlot extends Component {
 
         var sumstat = [left, right];
 
-        console.log(left);
-        console.log(right);
+        // console.log(left);
+        // console.log(right);
 
         // Gets the min and the max between the two graphs to get the range to use as the y axis
         var localMin = Math.min(left.min, right.min);
@@ -51,6 +53,7 @@ export default class BoxPlot extends Component {
           .domain(["Left", "Right"])
           .paddingInner(1)
           .paddingOuter(.5)
+        
         svg.append("g")
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x))
@@ -59,6 +62,7 @@ export default class BoxPlot extends Component {
         var y = d3.scaleLinear()
           .domain([localMin - range, localMax + range])
           .range([height, 0])
+        
         svg.append("g").call(d3.axisLeft(y))
 
         // Show the main vertical line (Min to Max range)
@@ -109,8 +113,8 @@ export default class BoxPlot extends Component {
             .data([left.min, left.max])
             .enter()
             .append("line")
-            .attr("x1", boxWidth / 2)
-            .attr("x2", boxWidth / 2 + 100)
+            .attr("x1", boxWidth / 2 - 30)
+            .attr("x2", boxWidth / 2 + 70)
             .attr("y1", function(d) { return(y(d))} )
             .attr("y2", function(d) { return(y(d))} )
             .attr("stroke", "black")
@@ -121,8 +125,8 @@ export default class BoxPlot extends Component {
             .data([right.min, right.max])
             .enter()
             .append("line")
-            .attr("x1", width - 150)
-            .attr("x2", width - 40)
+            .attr("x1", width - 120)
+            .attr("x2", width - 20)
             .attr("y1", function(d) { return(y(d))} )
             .attr("y2", function(d) { return(y(d))} )
             .attr("stroke", "black")
@@ -131,7 +135,7 @@ export default class BoxPlot extends Component {
     render() {
         return (
             <div className="graph-wrapper">
-                <h2>{ this.props.title }</h2>
+                <h2 className="title">{ this.props.title }</h2>
                 <div id="box-plot" ref={ this.graphRef }>
                 
                 </div>

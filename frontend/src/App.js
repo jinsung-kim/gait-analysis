@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import * as d3 from "d3";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import './App.css';
 
@@ -49,19 +51,25 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
-        <BoxPlot  title="Gait Velocity" 
+      <div>
+        <Container fluid>
+          <Row>
+            <Col>
+              <BoxPlot  title="Gait Velocity" 
                   left={ this.state.gaitVelocityLeft }
                   right={ this.state.gaitVelocityRight }
-        />
-        <BoxPlot  title="Stride Length" 
+              />
+              <BoxPlot  title="Stride Length" 
                   left={ this.state.strideLengthLeft }
                   right={ this.state.strideLengthRight }
-        />
-        <BoxPlot  title="Step Rate" 
+              />
+              <BoxPlot  title="Step Rate" 
                   left={ this.state.stepRateLeft }
                   right={ this.state.stepRateRight }
-        />
+              />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
