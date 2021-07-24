@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 # MongoDB connection
 # from pymongo import MongoClient
-
 
 # Used to generate tokens
 from flask_jwt_extended import create_access_token, JWTManager
@@ -52,6 +53,17 @@ def getBoxPlotData():
     }
 
     return jsonify({ "left": left, "right": right })
+
+
+@app.route('/getheat', methods=['GET'])
+def getHeatMapData():
+    
+    # Time period to query for
+    today = date.today()
+    six_months_ago = today + relativedelta(months=-6) # Go six months back
+
+    return jsonify({"start_date": { "month": six_months_ago.month, "day": six_months_ago.day, "year": six_months_ago.year }, 
+                    "end_date": { "month": today.month, "day": today.day, "year": today.year } })
 
 
 if __name__ == '__main__':

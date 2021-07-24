@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import Container from 'react-bootstrap/Container';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
+
+// import BoxPlot from "./components/BoxPlot";
+import HeatMap from "./components/HeatMap";
 
 import './App.css';
-
-import BoxPlot from "./components/BoxPlot";
 
 // https://medium.com/@varvara.munday/d3-in-react-a-step-by-step-tutorial-cba33ce000ce
 class App extends Component {
@@ -52,7 +53,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Container fluid>
+        {/* <Container fluid>
           <Row>
             <Col>
               <BoxPlot  title="Gait Velocity" 
@@ -69,7 +70,8 @@ class App extends Component {
               />
             </Col>
           </Row>
-        </Container>
+        </Container> */}
+        <HeatMap />
       </div>
     );
   }
