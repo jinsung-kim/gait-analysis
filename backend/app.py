@@ -4,7 +4,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 # MongoDB connection
-# from pymongo import MongoClient
+from pymongo import MongoClient
 
 # Used to generate tokens
 from flask_jwt_extended import create_access_token, JWTManager
@@ -16,8 +16,13 @@ app.config['JWT_SECRET_KEY'] = 'gaitanalysis'
 
 jwt = JWTManager(app)
 
+cluster = MongoClient("mongodb+srv://jinkim:SJsknyu774!@session-data.my1fw.mongodb.net/session-data?retryWrites=true&w=majority")
+database = cluster['gait']
+sessions = database['sessions']
+
 # Helpers
 from read_csv import CSV
+
 
 # Testing if up
 @app.route('/', methods=['GET'])
@@ -59,11 +64,19 @@ def getBoxPlotData():
 def getHeatMapData():
     
     # Time period to query for
-    today = date.today()
-    six_months_ago = today + relativedelta(months=-6) # Go six months back
+    # today = date.today()
+    # six_months_ago = today + relativedelta(months=-6) # Go six months back
 
-    return jsonify({"start_date": { "month": six_months_ago.month, "day": six_months_ago.day, "year": six_months_ago.year }, 
-                    "end_date": { "month": today.month, "day": today.day, "year": today.year } })
+    res = []
+
+    for session in sessions.find():
+        if (session["user"] == 1):
+            res.append({"date": session["date"], "left": session["left"], "right": session["right"] })
+
+    return jsonify(res)
+
+    # return jsonify({"start_date": { "month": six_months_ago.month, "day": six_months_ago.day, "year": six_months_ago.year }, 
+    #                 "end_date": { "month": today.month, "day": today.day, "year": today.year } })
 
 
 if __name__ == '__main__':
