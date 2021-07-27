@@ -69,15 +69,12 @@ class App extends Component {
         this.setState({
           data: d
         });
-
-        // console.log(this.state.data);
       })
       // If there are issues with CORS
       .catch(error => console.log(error));
   }
 
   render() {
-    // console.log(this.state.data);
     return (
       <div>
         {/* <Container fluid>

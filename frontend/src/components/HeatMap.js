@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import axios from "axios";
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
+import "../styles/HeatMap.css";
 
 // Used to get the time interval that we are looking for
 // Takes in a date object and the number of days that we want to go back for
@@ -22,20 +23,26 @@ export default class HeatMap extends Component {
 
   render() {
     const today = new Date();
-
-    console.log("values");
-    console.log(this.props.values);
     return (
       <div>
         <CalendarHeatmap
           startDate={ shiftDate(today, -150) }
           endDate={ today }
           values={ this.props.values }
-          // values={ [
-          //   { date: '2021-04-05', count: 1 },
-          //   { date: '2021-03-03', count: 4 },
-          //   { date: '2021-05-06', count: 2 },
-          // ] }
+          // Value/count of the graph
+          classForValue={ (value) => {
+            if (!value) {
+              return 'color-empty';
+            } else if (value.count < 0.25) {
+              return 'color-scale-4';
+            } else if (value.count < 0.5) {
+              return 'color-scale-3';
+            } else if (value.count < 0.75) {
+              return 'color-scale-2';
+            } else {
+              return 'color-scale-1';
+            }
+          }}
         />
       </div>
     );

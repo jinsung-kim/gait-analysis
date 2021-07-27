@@ -70,7 +70,7 @@ def getHeatMapData():
     res = []
 
     for session in sessions.find():
-        if (session["user"] == 1):
+        if (session["user"] == 1): # Should be all sessions for now
             res.append({"date": session["date"], "left": session["left"], "right": session["right"] })
 
     return jsonify(res)
