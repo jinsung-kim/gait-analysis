@@ -24,7 +24,8 @@ class App extends Component {
       strideLengthLeft: [],
       strideLengthRight: [],
       stepRateLeft: [],
-      stepRateRight: []
+      stepRateRight: [],
+      data: []
     };
   }
 
@@ -48,9 +49,35 @@ class App extends Component {
       })
       // If there are issues with CORS
       .catch(error => console.log(error));
+
+    const url2 = "http://localhost:5000/getheat";
+
+    axios.get(url2)
+      .then(res => {
+        const data = res.data;
+
+        var d = []
+
+        for (var i = 0; i < data.length; i++) {
+          let diff = Math.abs(data[i]["left"]["cadence"]["med"] - data[i]["right"]["cadence"]["med"]);
+          let dateof = data[i]["date"];
+          // let date = "2021-04-04";
+
+          d.push({ count: diff, date: dateof });
+        }
+
+        this.setState({
+          data: d
+        });
+
+        // console.log(this.state.data);
+      })
+      // If there are issues with CORS
+      .catch(error => console.log(error));
   }
 
   render() {
+    // console.log(this.state.data);
     return (
       <div>
         {/* <Container fluid>
@@ -71,7 +98,7 @@ class App extends Component {
             </Col>
           </Row>
         </Container> */}
-        <HeatMap />
+        <HeatMap values={ this.state.data }/>
       </div>
     );
   }

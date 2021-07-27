@@ -75,9 +75,6 @@ def getHeatMapData():
 
     return jsonify(res)
 
-    # return jsonify({"start_date": { "month": six_months_ago.month, "day": six_months_ago.day, "year": six_months_ago.year }, 
-    #                 "end_date": { "month": today.month, "day": today.day, "year": today.year } })
-
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', debug=False, port= os.environ.get('PORT', 80))
