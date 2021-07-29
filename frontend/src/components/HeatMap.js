@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import axios from "axios";
 import CalendarHeatmap from 'react-calendar-heatmap';
+import ReactTooltip from 'react-tooltip';
 import 'react-calendar-heatmap/dist/styles.css';
 import "../styles/HeatMap.css";
 
@@ -18,7 +19,7 @@ export default class HeatMap extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {};
   }
 
   render() {
@@ -42,8 +43,23 @@ export default class HeatMap extends Component {
             } else {
               return 'color-scale-1';
             }
+          } }
+          tooltipDataAttrs={value => {
+            console.log(value);
+            if (value.date === null) {
+              return {
+                'data-tip': ``,
+              }
+            }
+            return {
+              'data-tip': `${value.date} has count: ${
+                value.count
+              }`,
+            };
           }}
         />
+
+        <ReactTooltip />
       </div>
     );
   }
