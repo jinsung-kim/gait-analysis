@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-// import BoxPlot from "./components/BoxPlot";
+import BoxPlot from "./components/BoxPlot";
 import HeatMap from "./components/HeatMap";
 
 import './App.css';
@@ -59,7 +59,7 @@ class App extends Component {
         var d = []
 
         for (var i = 0; i < data.length; i++) {
-          let diff = Math.abs(data[i]["left"]["cadence"]["med"] - data[i]["right"]["cadence"]["med"]);
+          let diff = Math.abs(data[i]["val"]) * 100;
           let dateof = data[i]["date"];
           // let date = "2021-04-04";
 
@@ -77,7 +77,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <Container fluid>
+        <Container fluid>
           <Row>
             <Col>
               <BoxPlot  title="Gait Velocity" 
@@ -94,7 +94,7 @@ class App extends Component {
               />
             </Col>
           </Row>
-        </Container> */}
+        </Container>
         <HeatMap values={ this.state.data }/>
       </div>
     );

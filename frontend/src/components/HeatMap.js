@@ -45,7 +45,7 @@ export default class HeatMap extends Component {
             }
           } }
           tooltipDataAttrs={value => {
-            console.log(value);
+            // If there is no date (means that the backend JSON has not been generated yet)
             if (value.date === null) {
               return {
                 'data-tip': ``,
