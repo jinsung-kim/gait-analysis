@@ -31,12 +31,7 @@ export default class BoxPlot extends Component {
         const left = this.props.left;
         const right = this.props.right;
 
-
-
         var sumstat = [left, right];
-
-        // console.log(left);
-        // console.log(right);
 
         if (this.props.left === undefined || this.props.right === undefined) {
             return 
@@ -55,7 +50,7 @@ export default class BoxPlot extends Component {
         // Show the X scale
         var x = d3.scaleBand()
           .range([ 0, width ])
-          .domain(["Left", "Right"])
+          .domain(["left", "right"])
           .paddingInner(1)
           .paddingOuter(.5)
         
@@ -86,7 +81,7 @@ export default class BoxPlot extends Component {
             .style("width", 40)
 
         // Rectangle for the main box (Q1 to Q3)
-        var boxWidth = 100
+        var boxWidth = 100;
         svg
             .selectAll("boxes")
             .data(sumstat)

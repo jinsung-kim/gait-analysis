@@ -83,14 +83,10 @@ class App extends Component {
       "id": parseInt(this.state.sessionId)
     };
 
-    console.log(params);
-
     if (this.state.sessionId !== 0) {
       axios.post(url, params)
         .then(res => {
           const data = res.data;
-
-          console.log(data);
 
           this.setState({
             // Gait Velocity values
