@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
@@ -17,46 +17,73 @@ app.config['JWT_SECRET_KEY'] = 'gaitanalysis'
 
 jwt = JWTManager(app)
 
-cluster = MongoClient("mongodb+srv://jinkim:SJsknyu774!@session-data.my1fw.mongodb.net/session-data?retryWrites=true&w=majority")
-database = cluster['gait']
-sessions = database['sessions']
-
-# Helpers
-from read_csv import CSV
-
+CLUSTER = MongoClient("mongodb+srv://jinkim:SJsknyu774!@gait.my1fw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+DATABASE = CLUSTER['gait-sessions']
+SESSIONS = DATABASE['sessions']
 
 # Testing if up
 @app.route('/', methods=['GET'])
 def homePage():
     return "Hello, world"
 
+# User registration
+@app.route('/registration', methods=['POST'])
+def registerUser():
+    data = request.get_json()
 
-@app.route('/getbox', methods=['GET'])
+    pass
+
+# User login
+@app.route('/login', methods=['POST'])
+def loginUser():
+    # data = request.get_json()
+
+    pass
+
+
+@app.route('/getSessionIds', methods=['GET'])
+def getSessionIds():
+    # data = request.get_json() # Eventually this will be used to find specific user ID
+    res = []
+
+    for session in SESSIONS.find():
+        res.append(session["_id"])
+
+    return jsonify(res)
+
+
+@app.route('/getbox', methods=['POST'])
 def getBoxPlotData():
-    left_df = CSV("l", "sample/left.csv")
-    right_df = CSV("r", "sample/right.csv")
 
-    # Get left foot side
-    gait_velocity_left = left_df.read_file_for("stride_pace", "Left")
-    stride_length_left = left_df.read_file_for("stride_length", "Left")
-    step_rate_left = left_df.read_file_for("step_rate", "Left")
+    data = request.get_json(force=True)
+    target_id = -1
 
-    left = {
-        "gait_velocity": gait_velocity_left,
-        "stride_length": stride_length_left,
-        "step_rate": step_rate_left,
-    }
+    left = {}
+    right = {}
 
-    # Get right foot side
-    gait_velocity_right = right_df.read_file_for("stride_pace", "Right")
-    stride_length_right = right_df.read_file_for("stride_length", "Right")
-    step_rate_right = right_df.read_file_for("step_rate", "Right")
+    if data:
+        target_id = int(data["id"])
 
-    right = {
-        "gait_velocity": gait_velocity_right,
-        "stride_length": stride_length_right,
-        "step_rate": step_rate_right,
-    }
+        user_sessions = {}
+        res = {}
+
+        for session in SESSIONS.find():
+            user_sessions[session["_id"]] = session
+            if (session["_id"] == target_id):
+                res = session
+                break
+
+        left = {
+            "gait_velocity": res["left"]["stride_pace"],
+            "stride_length": res["left"]["stride_length"],
+            "step_rate": res["left"]["step_rate"],
+        }
+
+        right = {
+            "gait_velocity": res["right"]["stride_pace"],
+            "stride_length": res["right"]["stride_length"],
+            "step_rate": res["right"]["step_rate"],
+        }
 
     return jsonify({ "left": left, "right": right })
 
@@ -77,7 +104,7 @@ def getHeatMapData():
 
     re = []
 
-    for session in sessions.find():
+    for session in SESSIONS.find():
         if (session["user"] == 1): # Should be all sessions for now
             d = datetime.strptime(session["date"], "%m/%d/%Y")
             c = days_between(today, d)

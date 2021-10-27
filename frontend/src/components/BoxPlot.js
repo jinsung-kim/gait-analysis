@@ -31,11 +31,16 @@ export default class BoxPlot extends Component {
         const left = this.props.left;
         const right = this.props.right;
 
+
+
         var sumstat = [left, right];
 
         // console.log(left);
         // console.log(right);
 
+        if (this.props.left === undefined || this.props.right === undefined) {
+            return 
+        }
         // Gets the min and the max between the two graphs to get the range to use as the y axis
         var localMin = Math.min(left.min, right.min);
         var localMax = Math.max(left.max, right.max);
@@ -133,6 +138,13 @@ export default class BoxPlot extends Component {
     }
 
     render() {
+        if (this.props.left === undefined) {
+            return (
+                <div className="graph-wrapper">
+                <h2 className="title">Loading...</h2>
+            </div>
+            )
+        }
         return (
             <div className="graph-wrapper">
                 <h2 className="title">{ this.props.title }</h2>
