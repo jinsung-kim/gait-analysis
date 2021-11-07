@@ -62,7 +62,8 @@ def getBoxPlotData():
     right = {}
 
     if data:
-        target_id = int(data["id"])
+        # target_id = int(data["id"])
+        target_id = 380554
 
         user_sessions = {}
         res = {}

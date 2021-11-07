@@ -1,102 +1,140 @@
 <!-- Code from d3-graph-gallery.com -->
 <!DOCTYPE html>
-<meta charset="utf-8">
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
+<head>
+    <meta charset="utf-8">
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
 
-
 <script>
+const url = "http://localhost:5000/getbox"
 
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 30, left: 40},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+// var availableIds;
 
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+const json = { id: 380554 };
 
-// Read the data and compute summary statistics for each specie
-d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv", function(data) {
+axios.post(url, json).then(res => {
+    const data = res.data;
 
-  // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
-  var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-    .key(function(d) { return d.Species;})
-    .rollup(function(d) {
-      q1 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.25)
-      median = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.5)
-      q3 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.75)
-      interQuantileRange = q3 - q1
-      min = q1 - 1.5 * interQuantileRange
-      max = q3 + 1.5 * interQuantileRange
-      return({q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max})
-    })
-    .entries(data)
+    var margin = {top: 10, right: 30, bottom: 30, left: 40},
+            width = 350 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
 
-  // Show the X scale
-  var x = d3.scaleBand()
+    var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    console.log(data);
+
+    const left = data["left"]["gait_velocity"];
+    const right = data["right"]["gait_velocity"];
+
+    var sumstat = [left, right];
+
+    // Gets the min and the max between the two graphs to get the range to use as the y axis
+    var localMin = Math.min(left.min, right.min);
+    var localMax = Math.max(left.max, right.max);
+
+    if (isNaN(localMin) || isNaN(localMax)) {
+        console.log("could not convert");
+        localMin = 0;
+        localMax = 0;
+    }
+
+    var range = (localMax - localMin) / 10;
+
+    // Show the X scale
+    var x = d3.scaleBand()
     .range([ 0, width ])
-    .domain(["setosa", "versicolor", "virginica"])
+    .domain(["left", "right"])
     .paddingInner(1)
     .paddingOuter(.5)
-  svg.append("g")
+
+    svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x))
 
-  // Show the Y scale
-  var y = d3.scaleLinear()
-    .domain([3,9])
+    // Show the Y scale
+    var y = d3.scaleLinear()
+    .domain([localMin - range, localMax + range])
     .range([height, 0])
-  svg.append("g").call(d3.axisLeft(y))
 
-  // Show the main vertical line
-  svg
-    .selectAll("vertLines")
-    .data(sumstat)
-    .enter()
-    .append("line")
-      .attr("x1", function(d){return(x(d.key))})
-      .attr("x2", function(d){return(x(d.key))})
-      .attr("y1", function(d){return(y(d.value.min))})
-      .attr("y2", function(d){return(y(d.value.max))})
-      .attr("stroke", "black")
-      .style("width", 40)
+    svg.append("g").call(d3.axisLeft(y))
 
-  // rectangle for the main box
-  var boxWidth = 100
-  svg
-    .selectAll("boxes")
-    .data(sumstat)
-    .enter()
-    .append("rect")
-        .attr("x", function(d){return(x(d.key)-boxWidth/2)})
-        .attr("y", function(d){return(y(d.value.q3))})
-        .attr("height", function(d){return(y(d.value.q1)-y(d.value.q3))})
+    // Show the main vertical line (Min to Max range)
+    // Need to make sure that this is done first so that the box
+    // overlays on this line
+    svg
+        .selectAll("vertLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key)) })
+        .attr("x2", function(d) { return(x(d.key)) })
+        .attr("y1", function(d) { return(y(d.min)) })
+        .attr("y2", function(d) { return(y(d.max)) })
+        .attr("stroke", "black")
+        .style("width", 40)
+
+    // Rectangle for the main box (Q1 to Q3)
+    var boxWidth = 100;
+    svg
+        .selectAll("boxes")
+        .data(sumstat)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("y", function(d) { return(y(d.q3)) })
+        .attr("height", function(d) { return(y(d.q1) - y(d.q3)) })
         .attr("width", boxWidth )
         .attr("stroke", "black")
         .style("fill", "#69b3a2")
 
-  // Show the median
-  svg
-    .selectAll("medianLines")
-    .data(sumstat)
-    .enter()
-    .append("line")
-      .attr("x1", function(d){return(x(d.key)-boxWidth/2) })
-      .attr("x2", function(d){return(x(d.key)+boxWidth/2) })
-      .attr("y1", function(d){return(y(d.value.median))})
-      .attr("y2", function(d){return(y(d.value.median))})
-      .attr("stroke", "black")
-      .style("width", 80)
+    // Show the median
+    svg
+        .selectAll("medianLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("x2", function(d) { return(x(d.key) + boxWidth / 2) })
+        .attr("y1", function(d) { return(y(d.median)) })
+        .attr("y2", function(d) { return(y(d.median)) })
+        .attr("stroke", "black")
+        .style("width", 80)
+
+    // Left min and max lines
+    svg
+        .selectAll("toto")
+        .data([left.min, left.max])
+        .enter()
+        .append("line")
+        .attr("x1", boxWidth / 2 - 30)
+        .attr("x2", boxWidth / 2 + 70)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
+
+    // Right min and max lines
+    svg
+        .selectAll("toto")
+        .data([right.min, right.max])
+        .enter()
+        .append("line")
+        .attr("x1", width - 120)
+        .attr("x2", width - 20)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
 })
 
 </script>
