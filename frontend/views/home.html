@@ -10,6 +10,8 @@
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
+<div id="my_dataviz2"></div>
+<div id="my_dataviz3"></div>
 
 <script>
 const url = "http://localhost:5000/getbox"
@@ -20,6 +22,8 @@ const json = { id: 380554 };
 
 axios.post(url, json).then(res => {
     const data = res.data;
+
+    // 1 GAIT VELOCITY
 
     var margin = {top: 10, right: 30, bottom: 30, left: 40},
             width = 350 - margin.left - margin.right,
@@ -33,10 +37,8 @@ axios.post(url, json).then(res => {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    console.log(data);
-
-    const left = data["left"]["gait_velocity"];
-    const right = data["right"]["gait_velocity"];
+    var left = data["left"]["gait_velocity"];
+    var right = data["right"]["gait_velocity"];
 
     var sumstat = [left, right];
 
@@ -126,6 +128,225 @@ axios.post(url, json).then(res => {
 
     // Right min and max lines
     svg
+        .selectAll("toto")
+        .data([right.min, right.max])
+        .enter()
+        .append("line")
+        .attr("x1", width - 120)
+        .attr("x2", width - 20)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
+
+
+    // 2: Stride length
+
+    var svg2 = d3.select("#my_dataviz2")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    left = data["left"]["stride_length"];
+    right = data["right"]["stride_length"];
+
+    sumstat = [left, right];
+
+    // Gets the min and the max between the two graphs to get the range to use as the y axis
+    localMin = Math.min(left.min, right.min);
+    localMax = Math.max(left.max, right.max);
+
+    if (isNaN(localMin) || isNaN(localMax)) {
+        console.log("could not convert");
+        localMin = 0;
+        localMax = 0;
+    }
+
+    range = (localMax - localMin) / 10;
+
+    // Show the X scale
+    x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(["left", "right"])
+    .paddingInner(1)
+    .paddingOuter(.5)
+
+    svg2.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+
+    // Show the Y scale
+    y = d3.scaleLinear()
+    .domain([localMin - range, localMax + range])
+    .range([height, 0])
+
+    svg2.append("g").call(d3.axisLeft(y))
+
+    // Show the main vertical line (Min to Max range)
+    // Need to make sure that this is done first so that the box
+    // overlays on this line
+    svg2
+        .selectAll("vertLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key)) })
+        .attr("x2", function(d) { return(x(d.key)) })
+        .attr("y1", function(d) { return(y(d.min)) })
+        .attr("y2", function(d) { return(y(d.max)) })
+        .attr("stroke", "black")
+        .style("width", 40)
+
+    // Rectangle for the main box (Q1 to Q3)
+    svg2
+        .selectAll("boxes")
+        .data(sumstat)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("y", function(d) { return(y(d.q3)) })
+        .attr("height", function(d) { return(y(d.q1) - y(d.q3)) })
+        .attr("width", boxWidth )
+        .attr("stroke", "black")
+        .style("fill", "#69b3a2")
+
+    // Show the median
+    svg2
+        .selectAll("medianLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("x2", function(d) { return(x(d.key) + boxWidth / 2) })
+        .attr("y1", function(d) { return(y(d.median)) })
+        .attr("y2", function(d) { return(y(d.median)) })
+        .attr("stroke", "black")
+        .style("width", 80)
+
+    // Left min and max lines
+    svg2
+        .selectAll("toto")
+        .data([left.min, left.max])
+        .enter()
+        .append("line")
+        .attr("x1", boxWidth / 2 - 30)
+        .attr("x2", boxWidth / 2 + 70)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
+
+    // Right min and max lines
+    svg2
+        .selectAll("toto")
+        .data([right.min, right.max])
+        .enter()
+        .append("line")
+        .attr("x1", width - 120)
+        .attr("x2", width - 20)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
+
+    var svg3 = d3.select("#my_dataviz3")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    left = data["left"]["step_rate"];
+    right = data["right"]["step_rate"];
+
+    sumstat = [left, right];
+
+    // Gets the min and the max between the two graphs to get the range to use as the y axis
+    localMin = Math.min(left.min, right.min);
+    localMax = Math.max(left.max, right.max);
+
+    if (isNaN(localMin) || isNaN(localMax)) {
+        console.log("could not convert");
+        localMin = 0;
+        localMax = 0;
+    }
+
+    range = (localMax - localMin) / 10;
+
+    // Show the X scale
+    x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(["left", "right"])
+    .paddingInner(1)
+    .paddingOuter(.5)
+
+    svg3.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+
+    // Show the Y scale
+    y = d3.scaleLinear()
+    .domain([localMin - range, localMax + range])
+    .range([height, 0])
+
+    svg3.append("g").call(d3.axisLeft(y))
+
+    // Show the main vertical line (Min to Max range)
+    // Need to make sure that this is done first so that the box
+    // overlays on this line
+    svg3
+        .selectAll("vertLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key)) })
+        .attr("x2", function(d) { return(x(d.key)) })
+        .attr("y1", function(d) { return(y(d.min)) })
+        .attr("y2", function(d) { return(y(d.max)) })
+        .attr("stroke", "black")
+        .style("width", 40)
+
+    // Rectangle for the main box (Q1 to Q3)
+    svg3
+        .selectAll("boxes")
+        .data(sumstat)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("y", function(d) { return(y(d.q3)) })
+        .attr("height", function(d) { return(y(d.q1) - y(d.q3)) })
+        .attr("width", boxWidth )
+        .attr("stroke", "black")
+        .style("fill", "#69b3a2")
+
+    // Show the median
+    svg3
+        .selectAll("medianLines")
+        .data(sumstat)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) { return(x(d.key) - boxWidth / 2) })
+        .attr("x2", function(d) { return(x(d.key) + boxWidth / 2) })
+        .attr("y1", function(d) { return(y(d.median)) })
+        .attr("y2", function(d) { return(y(d.median)) })
+        .attr("stroke", "black")
+        .style("width", 80)
+
+    // Left min and max lines
+    svg3
+        .selectAll("toto")
+        .data([left.min, left.max])
+        .enter()
+        .append("line")
+        .attr("x1", boxWidth / 2 - 30)
+        .attr("x2", boxWidth / 2 + 70)
+        .attr("y1", function(d) { return(y(d))} )
+        .attr("y2", function(d) { return(y(d))} )
+        .attr("stroke", "black")
+
+    // Right min and max lines
+    svg3
         .selectAll("toto")
         .data([right.min, right.max])
         .enter()
