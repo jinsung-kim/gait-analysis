@@ -8,8 +8,6 @@ export default class BoxPlot extends Component {
 
     constructor(props) {
         super(props);
-
-        // Reference that points to a div to overlay the image
         this.graphRef = React.createRef();
     }
 

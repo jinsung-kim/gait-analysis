@@ -105,8 +105,8 @@ def getHeatMapData():
     re = []
 
     for session in SESSIONS.find():
-        if (session["user"] == 1): # Should be all sessions for now
-            d = datetime.strptime(session["date"], "%m/%d/%Y")
+        if (str(session["user"]) == "618877e7ff9832fe99b10cd0"): # Should be all sessions for now
+            d = datetime.strptime(session["date"], "%m-%d-%Y")
             c = days_between(today, d)
             by_date[c] = { "left": session["left"], "right": session["right"] }
             m = max(m, c)
@@ -175,7 +175,7 @@ def getHeatMapData():
     res = []
 
     for session in re:
-        d = datetime.strptime(session["date"], "%m/%d/%Y")
+        d = datetime.strptime(session["date"], "%m-%d-%Y")
         c = days_between(today, d)
         week = math.floor(c / 7)
 
