@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import CalendarHeatmap from 'react-calendar-heatmap';
 import ReactTooltip from 'react-tooltip';
 import 'react-calendar-heatmap/dist/styles.css';
-import "../styles/HeatMap.css";
+
+import "../../styles/HeatMap.css";
 
 // Used to get the time interval that we are looking for
 // Takes in a date object and the number of days that we want to go back for

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
-import "../styles/BoxPlot.css";
+import "../../styles/BoxPlot.css";
 
 export default class BoxPlot extends Component {
 

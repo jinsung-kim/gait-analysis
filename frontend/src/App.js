@@ -5,8 +5,9 @@ import axios from "axios";
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
 
-import BoxPlot from "./components/BoxPlot";
-import HeatMap from "./components/HeatMap";
+import BoxPlot from "./components/graphs/BoxPlot";
+import HeatMap from "./components/graphs/HeatMap";
+import Header from "./components/Header";
 
 import './App.css';
 
@@ -94,6 +95,7 @@ class App extends Component {
       <div style={{  
         padding: "30px"
       }}>
+        <Header />
         <div style={{  
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr"
