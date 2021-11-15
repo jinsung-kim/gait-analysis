@@ -1,107 +1,206 @@
-import React, { Component } from "react";
+import * as React from 'react';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { mainListItems, secondaryListItems } from './listItems';
+import Chart from './Chart';
+import Deposits from './Deposits';
+import Orders from './Orders';
 
-export default class Header extends Component {
-    render() {
-        return (
-            <div class="sidebar">
-        <div class="sidebar__top"><button class="sidebar__close"><svg class="icon icon-close">
-              {/* <use xlink:href="img/sprite.svg#icon-close"></use> */}
-            </svg></button><a class="sidebar__logo" href="index.html"><img class="sidebar__pic sidebar__pic_black" src="img/logo.png" alt="" /><img class="sidebar__pic sidebar__pic_white" src="img/logo-white.png" alt="" /></a><button class="sidebar__burger"></button></div>
-        <div class="sidebar__wrapper">
-          <div class="sidebar__inner"><a class="sidebar__logo" href="index.html"><img class="sidebar__pic" src="img/logo-sm.png" alt="" /></a>
-            <div class="sidebar__list">
-              <div class="sidebar__group">
-                <div class="sidebar__caption caption-sm">Admin<span> tools</span></div>
-                <div class="sidebar__menu"><a class="sidebar__item active" href="index.html">
-                    <div class="sidebar__icon"><svg class="icon icon-overview">
-                        {/* <use xlink:href="img/sprite.svg#icon-overview"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Overview</div>
-                  </a><a class="sidebar__item" href="products.html">
-                    <div class="sidebar__icon"><svg class="icon icon-bag">
-                        {/* <use xlink:href="img/sprite.svg#icon-bag"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Products</div>
-                  </a><a class="sidebar__item" href="campaigns.html">
-                    <div class="sidebar__icon"><svg class="icon icon-chart">
-                        {/* <use xlink:href="img/sprite.svg#icon-chart"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Campaigns</div>
-                  </a><a class="sidebar__item" href="schedules.html">
-                    <div class="sidebar__icon"><svg class="icon icon-discovery">
-                        {/* <use xlink:href="img/sprite.svg#icon-discovery"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Schedules</div>
-                  </a><a class="sidebar__item" href="payouts.html">
-                    <div class="sidebar__icon"><svg class="icon icon-wallet">
-                        {/* <use xlink:href="img/sprite.svg#icon-wallet"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Payouts</div>
-                  </a><a class="sidebar__item" href="statement.html">
-                    <div class="sidebar__icon"><svg class="icon icon-document">
-                        {/* <use xlink:href="img/sprite.svg#icon-document"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Statements</div>
-                  </a><a class="sidebar__item js-popup-open" href="#popup-settings" data-effect="mfp-zoom-in">
-                    <div class="sidebar__icon"><svg class="icon icon-settings">
-                        {/* <use xlink:href="img/sprite.svg#icon-settings"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Settings </div>
-                  </a></div>
-              </div>
-              <div class="sidebar__group">
-                <div class="sidebar__caption caption-sm">Insights</div>
-                <div class="sidebar__menu"><a class="sidebar__item" href="inbox.html">
-                    <div class="sidebar__icon"><svg class="icon icon-message">
-                        {/* <use xlink:href="img/sprite.svg#icon-message"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Inbox</div>
-                    <div class="sidebar__counter">18</div>
-                  </a><a class="sidebar__item" href="notifications.html">
-                    <div class="sidebar__icon"><svg class="icon icon-notification">
-                        {/* <use xlink:href="img/sprite.svg#icon-notification"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Notifications</div>
-                    <div class="sidebar__counter">2 </div>
-                  </a><a class="sidebar__item" href="comments.html">
-                    <div class="sidebar__icon"><svg class="icon icon-chat">
-                        {/* <use xlink:href="img/sprite.svg#icon-chat"></use> */}
-                      </svg></div>
-                    <div class="sidebar__text">Comments</div>
-                    <div class="sidebar__counter">20</div>
-                  </a></div>
-              </div>
-            </div>
-            <div class="sidebar__profile">
-              <div class="sidebar__details"><a class="sidebar__link" href="#">
-                  <div class="sidebar__icon"><svg class="icon icon-profile">
-                      {/* <use xlink:href="img/sprite.svg#icon-profile"></use> */}
-                    </svg></div>
-                  <div class="sidebar__text">Profile</div>
-                </a><a class="sidebar__link" href="#">
-                  <div class="sidebar__icon"><svg class="icon icon-logout">
-                      {/* <use xlink:href="img/sprite.svg#icon-logout"></use> */}
-                    </svg></div>
-                  <div class="sidebar__text">Log out</div>
-                </a></div><a class="sidebar__user" href="#">
-                <div class="sidebar__ava"><img class="sidebar__pic" src="img/ava.png" alt="" /></div>
-                <div class="sidebar__desc">
-                  <div class="sidebar__man">Tam Tran</div>
-                  <div class="sidebar__status caption">Free account</div>
-                </div>
-                <div class="sidebar__arrow"><svg class="icon icon-arrows">
-                    {/* <use xlink:href="img/sprite.svg#icon-arrows"></use> */}
-                  </svg></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="sidebar__bottom"><label class="switch switch_theme js-switch-theme"><input class="switch__input" type="checkbox" /><span class="switch__in"><span class="switch__box"></span><span class="switch__icon"><svg class="icon icon-moon">
-                  {/* <use xlink:href="img/sprite.svg#icon-moon"></use> */}
-                </svg><svg class="icon icon-sun">
-                  {/* <use xlink:href="img/sprite.svg#icon-sun"></use> */}
-                </svg></span></span></label></div>
-      </div>
-        );
-    }
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const drawerWidth = 240;
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(9),
+        },
+      }),
+    },
+  }),
+);
+
+const mdTheme = createTheme();
+
+function DashboardContent() {
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
+            sx={{
+              pr: '24px', // keep right padding when drawer closed
+            }}
+          >
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Dashboard
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List>{mainListItems}</List>
+          <Divider />
+          <List>{secondaryListItems}</List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                  }}
+                >
+                  <Chart />
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                  }}
+                >
+                  <Deposits />
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Orders />
+                </Paper>
+              </Grid>
+            </Grid>
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
+}
+
+export default function Dashboard() {
+  return <DashboardContent />;
 }
