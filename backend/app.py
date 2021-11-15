@@ -207,8 +207,6 @@ def getHeatMapData():
 
         res.append({ "date": session["date"].replace('-', '/'), "val": g_diff })
 
-    print(res)
-
     return jsonify(res)
 
 
