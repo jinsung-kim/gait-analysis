@@ -88,7 +88,7 @@ class App extends Component {
   render() {
     // Wait for values to be loaded in
     if (!this.state.boxReady && !this.state.heatReady) { return null; }
-    // console.log(this.state.data);
+    
     return (
       <div style={{  
         padding: "30px"

@@ -18,7 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
+import Charts from './Charts';
 import Recent from './Recent';
 import LastSixMonths from './LastSixMonths';
 
@@ -90,6 +90,12 @@ class DashboardContent extends Component {
 
     this.state = {
       open: true,
+      gaitVelocityLeft: this.props.gaitVelocityLeft,
+      gaitVelocityRight: this.props.gaitVelocityRight,
+      strideLengthLeft: this.props.strideLengthLeft,
+      strideLengthRight: this.props.strideLengthRight,
+      stepRateLeft: this.props.stepRateLeft,
+      stepRateRight: this.props.stepRateRight,
     }
   }
 
@@ -100,9 +106,8 @@ class DashboardContent extends Component {
   }
 
   render() {
-    console.log(this.props.values);
     return (
-      <ThemeProvider theme={mdTheme}>
+      <ThemeProvider theme={ mdTheme }>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
           <AppBar position="absolute" open={this.state.open}>
@@ -182,7 +187,13 @@ class DashboardContent extends Component {
                       height: 240,
                     }}
                   >
-                    <Chart />
+                    <Charts   gaitVelocityLeft={ this.state.gaitVelocityLeft }
+                              gaitVelocityRight={ this.state.gaitVelocityRight }
+                              strideLengthLeft={ this.state.strideLengthLeft }
+                              strideLengthRight={ this.state.strideLengthRight }
+                              stepRateLeft={ this.state.stepRateLeft }
+                              stepRateRight={ this.state.stepRateRight }
+                              />
                   </Paper>
                 </Grid>
                 {/* Most recent session box plots */}
@@ -201,7 +212,7 @@ class DashboardContent extends Component {
                 {/* Last Six Months */}
                 <Grid item xs={12}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <LastSixMonths values={this.props.values} />
+                    <LastSixMonths values={ this.props.values } />
                   </Paper>
                 </Grid>
               </Grid>
@@ -220,11 +231,25 @@ export default class Header extends Component {
     super(props);
 
     this.state = {
-      values: this.props.values
+      values: this.props.values,
+      gaitVelocityLeft: this.props.gaitVelocityLeft,
+      gaitVelocityRight: this.props.gaitVelocityRight,
+      strideLengthLeft: this.props.strideLengthLeft,
+      strideLengthRight: this.props.strideLengthRight,
+      stepRateLeft: this.props.stepRateLeft,
+      stepRateRight: this.props.stepRateRight,
     }
   }
   
   render() {
-    return <DashboardContent values={ this.state.values } />;
+    return <DashboardContent 
+            values={ this.state.values }
+            gaitVelocityLeft={ this.state.gaitVelocityLeft }
+            gaitVelocityRight={ this.state.gaitVelocityRight }
+            strideLengthLeft={ this.state.strideLengthLeft }
+            strideLengthRight={ this.state.strideLengthRight }
+            stepRateLeft={ this.state.stepRateLeft }
+            stepRateRight={ this.state.stepRateRight }
+            />;
   }
 }
