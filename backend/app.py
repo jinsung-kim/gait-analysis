@@ -52,6 +52,48 @@ def getSessionIds():
     return jsonify(res)
 
 
+@app.route("/streaksessions", methods=['POST'])
+def getLatestStreak():
+
+    def diff_dates(date1, date2):
+        return abs(date2 - date1).days
+
+    data = request.get_json()
+
+    if data:
+
+        res = []
+
+        for session in SESSIONS.find():
+            if (str(session["user"]) == data["id"]):
+                res.append(session["date"])
+
+        i = len(res) - 1
+        count = 0
+
+        # Most recent session was today
+        if diff_dates(datetime.today(), datetime.strptime(res[i], '%m-%d-%Y')) == 0:
+            count = 1
+
+        while (i >= 1):
+
+            date1 = datetime.strptime(res[i], '%m-%d-%Y')
+            date2 = datetime.strptime(res[i - 1], '%m-%d-%Y')
+
+            if (diff_dates(date1, date2) <= 1):
+                count += 1
+            else:
+                break
+
+            i -= 1
+
+        print(count)
+
+        return jsonify({ "status": 200, "count": count })
+    
+    return jsonify({ "status": 400, "errorMessage": "Bad Request" })
+
+
 @app.route('/getbox', methods=['POST'])
 def getBoxPlotData():
 

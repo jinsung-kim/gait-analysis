@@ -5,8 +5,6 @@ import axios from "axios";
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
 
-import BoxPlot from "./components/graphs/BoxPlot";
-import HeatMap from "./components/graphs/HeatMap";
 import Header from "./components/Header";
 
 import './App.css';
@@ -73,8 +71,6 @@ class App extends Component {
           d.push({ count: diff, date: dateof });
         }
 
-        console.log(d);
-
         this.setState({
           data: d,
           heatReady: true,
@@ -90,30 +86,25 @@ class App extends Component {
   }
 
   render() {
+    // Wait for values to be loaded in
     if (!this.state.boxReady && !this.state.heatReady) { return null; }
     return (
       <div style={{  
         padding: "30px"
       }}>
-        <Header />
-        <div style={{  
+        <Header 
+          gaitVelocityLeft={ this.state.gaitVelocityLeft }
+          gaitVelocityRight={ this.state.gaitVelocityRight }
+          strideLengthLeft={ this.state.strideLengthLeft }
+          strideLengthRight={ this.state.strideLengthRight }
+          stepRateLeft={ this.state.stepRateLeft }
+          stepRateRight={ this.state.stepRateRight }
+          values={ this.state.data }
+          />
+        {/* <div style={{  
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr"
-        }}>
-          <BoxPlot  title="Gait Velocity" 
-              left={ this.state.gaitVelocityLeft }
-              right={ this.state.gaitVelocityRight }
-          />
-          <BoxPlot  title= "Stride Length" 
-              left={ this.state.strideLengthLeft }
-              right={ this.state.strideLengthRight }
-          />
-          <BoxPlot  title="Step Rate" 
-              left={ this.state.stepRateLeft }
-              right={ this.state.stepRateRight }
-          />
-        </div>
-        <HeatMap values={ this.state.data }/>
+        }}> </div> */}
       </div>
     );
   }
