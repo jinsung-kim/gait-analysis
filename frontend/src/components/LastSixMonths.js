@@ -6,6 +6,7 @@ import Table from '@mui/material/Table';
 // import TableHead from '@mui/material/TableHead';
 // import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import Heatmap from "./graphs/HeatMap";
 
 class LastSixMonths extends Component {
 
@@ -26,7 +27,7 @@ class LastSixMonths extends Component {
   render() {
     return (
       <React.Fragment>
-        <Title>Recent Orders</Title>
+        <Title>Last Six Month Overview</Title>
         <Table size="small">
           {/* <TableHead>
             <TableRow>
@@ -48,6 +49,7 @@ class LastSixMonths extends Component {
               </TableRow>
             ))}
           </TableBody> */}
+          <Heatmap values={ this.state.values }/>
         </Table>
         <Link color="primary" href="#" onClick={this.preventDefault} sx={{ mt: 3 }}>
           See all sessions

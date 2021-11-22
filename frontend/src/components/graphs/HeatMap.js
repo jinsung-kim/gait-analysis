@@ -20,17 +20,22 @@ export default class HeatMap extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      values: this.props.values
+    };
+
+    // console.log(this.state.values);
   }
 
   render() {
+    if (!this.state.values) return null;
     const today = new Date();
     return (
       <div>
         <CalendarHeatmap
           startDate={ shiftDate(today, -150) }
           endDate={ today }
-          values={ this.props.values }
+          values={ this.state.values }
           // Value/count of the graph
           classForValue={ (value) => {
             if (!value) {

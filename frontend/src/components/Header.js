@@ -27,7 +27,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        NYU Langone
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -100,6 +100,7 @@ class DashboardContent extends Component {
   }
 
   render() {
+    console.log(this.props.values);
     return (
       <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: 'flex' }}>
@@ -213,6 +214,17 @@ class DashboardContent extends Component {
   }
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
+export default class Header extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      values: this.props.values
+    }
+  }
+  
+  render() {
+    return <DashboardContent values={ this.state.values } />;
+  }
 }
